@@ -2,12 +2,21 @@ import re
 from collections import deque
 
 class Calculator:
+    supported_operators = "+-"
+
     def calculate(self, input_string):
-        elems = re.findall('\d+|[+-]', input_string)
         output = deque([])
         operators = []
+        elems = self.__find_expression_elements(input_string)
         self.__parse_infix_notation(elems, output, operators)
         return self.__eval_rpn(output)
+
+    def __find_expression_elements(self, input_string):
+        regexp = "\d+|[{}]".format(self.supported_operators)
+        elems = re.findall(regexp, input_string)
+        if not elems:
+            raise RuntimeError("No operands or operators provided")
+        else: return elems
 
     def __parse_infix_notation(self, elements, output, operators):
         for e in elements:
