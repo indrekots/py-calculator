@@ -18,5 +18,17 @@ class TestCalculator(unittest.TestCase):
   def test_calculate_with_spaces(self):
       self.assertEqual(self.calc.calculate("4 - 3   +1"), 2, "Should equal 2")
 
+  def test_raise_exception_when_unmatching_subtraction_operand(self):
+      with self.assertRaises(RuntimeError) as ex:
+          self.calc.calculate("3+2-")
+
+      self.assertEqual(ex.exception.message, "Subtraction requires 2 operands")
+
+  def test_raise_exception_when_unmatching_addition_operand(self):
+      with self.assertRaises(RuntimeError) as ex:
+          self.calc.calculate("3-2+")
+
+      self.assertEqual(ex.exception.message, "Addition requires 2 operands")
+
 if __name__ == '__main__':
     unittest.main()
