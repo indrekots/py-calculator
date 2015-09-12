@@ -30,5 +30,14 @@ class TestCalculator(unittest.TestCase):
 
       self.assertEqual(ex.exception.message, "Addition requires 2 operands")
 
+  def test_calculate_with_one_operand(self):
+      self.assertEqual(self.calc.calculate("5"), 5, "Should equal 5")
+
+  def test_calculate_with_missing_operator(self):
+      with self.assertRaises(RuntimeError) as ex:
+          self.calc.calculate("2 5")
+
+      self.assertEqual(ex.exception.message, "Input has too many values")
+
 if __name__ == '__main__':
     unittest.main()
