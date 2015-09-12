@@ -39,5 +39,11 @@ class TestCalculator(unittest.TestCase):
 
       self.assertEqual(ex.exception.message, "Input has too many values")
 
+  def test_raise_exception_when_no_operands_or_operators_found(self):
+      with self.assertRaises(RuntimeError) as ex:
+          self.calc.calculate("gibberish")
+
+      self.assertEqual(ex.exception.message, "No operands or operators provided")
+
 if __name__ == '__main__':
     unittest.main()

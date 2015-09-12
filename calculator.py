@@ -6,7 +6,11 @@ class Calculator:
         elems = re.findall('\d+|[+-]', input_string)
         output = deque([])
         operators = []
-        for e in elems:
+        self.__parse_infix_notation(elems, output, operators)
+        return self.__eval_rpn(output)
+
+    def __parse_infix_notation(self, elements, output, operators):
+        for e in elements:
             if e.isdigit():
                 output.append(float(e))
             else:
@@ -14,8 +18,6 @@ class Calculator:
 
         while len(operators) > 0:
             output.append(operators.pop())
-
-        return self.__eval_rpn(output)
 
     def __eval_rpn(self, output):
         operands = []
