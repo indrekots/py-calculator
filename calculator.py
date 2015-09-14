@@ -2,7 +2,11 @@ import re
 from collections import deque
 
 class Calculator:
-    supported_operators = "*+-"
+    supported_operators = {
+        "*": {"precedence": 3, "assoc": "left"},
+        "+": {"precedence": 2, "assoc": "left"},
+        "-": {"precedence": 2, "assoc": "left"}
+    }
 
     def calculate(self, input_string):
         output = deque([])
@@ -12,7 +16,7 @@ class Calculator:
         return self.__eval_rpn(output)
 
     def __find_expression_elements(self, input_string):
-        regexp = "\d+|[{}]".format(self.supported_operators)
+        regexp = "\d+|[{}]".format("".join(self.supported_operators.keys()))
         elems = re.findall(regexp, input_string)
         if not elems:
             raise RuntimeError("No operands or operators provided")
@@ -43,10 +47,12 @@ class Calculator:
             return operands.pop()
         else: raise RuntimeError("Input has too many values")
 
-    def __append_operator(self, operators, output, elem):
-        if len(operators) > 0:
+    def __append_operator(self, operators, output, op1):
+        while len(operators) > 0:
+            op2 = operators[-1]
             output.append(operators.pop())
-        operators.append(elem)
+
+        operators.append(op1)
 
     def __add(self, operands):
         if len(operands) < 2:
