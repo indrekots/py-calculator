@@ -45,5 +45,8 @@ class TestCalculator(unittest.TestCase):
 
       self.assertEqual(ex.exception.message, "No operands or operators provided")
 
+  def test_multiplication(self):
+      self.assertEqual(self.calc.calculate("3 * 3"), 9, "Should equal 9")
+
 if __name__ == '__main__':
     unittest.main()

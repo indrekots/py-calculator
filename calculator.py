@@ -2,7 +2,7 @@ import re
 from collections import deque
 
 class Calculator:
-    supported_operators = "+-"
+    supported_operators = "*+-"
 
     def calculate(self, input_string):
         output = deque([])
@@ -37,6 +37,7 @@ class Calculator:
             else:
                 if token == "+": self.__add(operands)
                 if token == "-": self.__subtract(operands)
+                if token == "*": self.__multiply(operands)
 
         if len(operands) == 1:
             return operands.pop()
@@ -61,3 +62,10 @@ class Calculator:
             op2 = operands.pop()
             op1 = operands.pop()
             operands.append(op1 - op2)
+
+    def __multiply(self, operands):
+        if len(operands) < 2:
+            raise RuntimeError("Multiplication requires 2 operands")
+        else:
+            result = operands.pop() * operands.pop()
+            operands.append(result)
