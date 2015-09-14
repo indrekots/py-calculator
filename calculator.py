@@ -50,9 +50,22 @@ class Calculator:
     def __append_operator(self, operators, output, op1):
         while len(operators) > 0:
             op2 = operators[-1]
-            output.append(operators.pop())
+            if ((self.__is_left_associative(op1) and self.__op_precedence(op1) <= self.__op_precedence(op2)) or
+                (self.__is_right_associative(op1) and self.__op_precedence(op1) <= self.__op_precedence(op2))):
+                output.append(operators.pop())
+            else:
+                break
 
         operators.append(op1)
+
+    def __is_left_associative(self, op):
+        return self.supported_operators[op]["assoc"] == "left"
+
+    def __is_right_associative(self, op):
+        return self.supported_operators[op]["assoc"] == "right"
+
+    def __op_precedence(self, op):
+        return self.supported_operators[op]["precedence"]
 
     def __add(self, operands):
         if len(operands) < 2:

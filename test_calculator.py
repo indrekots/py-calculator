@@ -48,8 +48,10 @@ class TestCalculator(unittest.TestCase):
   def test_multiplication(self):
       self.assertEqual(self.calc.calculate("3 * 3"), 9, "Should equal 9")
 
-  def test_add_and_multiply(self):
+  def test_add_subtract_and_multiply(self):
       self.assertEqual(self.calc.calculate("3-2*5"), -7, "Should equal -7")
+      self.assertEqual(self.calc.calculate("3+2*5-3*10"), -17, "Should equal -17")
+
 
 if __name__ == '__main__':
     unittest.main()
