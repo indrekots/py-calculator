@@ -4,6 +4,7 @@ from collections import deque
 class Calculator:
     supported_operators = {
         "*": {"precedence": 3, "assoc": "left"},
+        "/": {"precedence": 3, "assoc": "left"},
         "+": {"precedence": 2, "assoc": "left"},
         "-": {"precedence": 2, "assoc": "left"}
     }
@@ -42,6 +43,7 @@ class Calculator:
                 if token == "+": self.__add(operands)
                 if token == "-": self.__subtract(operands)
                 if token == "*": self.__multiply(operands)
+                if token == "/": self.__divide(operands)
 
         if len(operands) == 1:
             return operands.pop()
@@ -88,3 +90,11 @@ class Calculator:
         else:
             result = operands.pop() * operands.pop()
             operands.append(result)
+
+    def __divide(self, operands):
+        if len(operands) < 2:
+            raise RuntimeError("Division requires 2 operands")
+        else:
+            op2 = operands.pop()
+            op1 = operands.pop()
+            operands.append(op1 / op2)

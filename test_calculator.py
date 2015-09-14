@@ -52,6 +52,18 @@ class TestCalculator(unittest.TestCase):
       self.assertEqual(self.calc.calculate("3-2*5"), -7, "Should equal -7")
       self.assertEqual(self.calc.calculate("3+2*5-3*10"), -17, "Should equal -17")
 
+  def test_division(self):
+      self.assertEqual(self.calc.calculate("6/2"), 3, "Should equal 3")
+
+  def test_divide_and_multiply(self):
+      self.assertEqual(self.calc.calculate("6/2*4"), 12, "Should equal 12")
+
+  def test_add_subtract_and_divide(self):
+      self.assertEqual(self.calc.calculate("6-4/2"), 4, "Should equal 4")
+
+  def test_add_subtract_multiply_and_divide(self):
+      self.assertEqual(self.calc.calculate("4-6/2+4*2"), 9, "Should equal 9")
+
 
 if __name__ == '__main__':
     unittest.main()
