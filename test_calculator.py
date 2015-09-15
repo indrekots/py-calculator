@@ -64,6 +64,9 @@ class TestCalculator(unittest.TestCase):
   def test_add_subtract_multiply_and_divide(self):
       self.assertEqual(self.calc.calculate("4-6/2+4*2"), 9, "Should equal 9")
 
+  def test_calculate_with_parenthesis(self):
+      self.assertEqual(self.calc.calculate("2*(3+5)"), 16, "Should equal 16")
+
 
 if __name__ == '__main__':
     unittest.main()

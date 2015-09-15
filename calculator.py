@@ -17,7 +17,7 @@ class Calculator:
         return self.__eval_rpn(output)
 
     def __find_exp_elems(self, input_string):
-        regexp = "\d+|[{}]".format("".join(self.supported_operators.keys()))
+        regexp = "\d+|[{0}{1}]".format("".join(self.supported_operators.keys()), "\(\)")
         elems = re.findall(regexp, input_string)
         if not elems:
             raise RuntimeError("No operands or operators provided")
@@ -27,6 +27,15 @@ class Calculator:
         for e in elements:
             if e.isdigit():
                 output.append(float(e))
+            elif e == "(":
+                operators.append(e)
+            elif e == ")":
+                while len(operators) > 0:
+                    if operators[-1] == "(":
+                        operators.pop()
+                        break
+                    else:
+                        output.append(operators.pop())
             else:
                 self.__append_operator(operators, output, e)
 
@@ -64,10 +73,11 @@ class Calculator:
         operators.append(op1)
 
     def __should_pop_op_off_stack(self, op1, op2):
-        return (self.__is_left_associative(op1) and
+        return op2 != "(" and \
+               ((self.__is_left_associative(op1) and
                 self.__op_precedence(op1) <= self.__op_precedence(op2)) or \
                (self.__is_right_associative(op1) and
-                self.__op_precedence(op1) < self.__op_precedence(op2))
+                self.__op_precedence(op1) < self.__op_precedence(op2)))
 
     def __is_left_associative(self, op):
         return self.supported_operators[op]["assoc"] == "left"
