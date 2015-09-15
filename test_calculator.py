@@ -79,5 +79,10 @@ class TestCalculator(unittest.TestCase):
 
       self.assertEqual(ex.exception.message, "Mismatching parenthesis")
 
+  def test_raise_to_power(self):
+      self.assertEqual(self.calc.calculate("2^2"), 4, "Should equal 4")
+      self.assertEqual(self.calc.calculate("2^2*5"), 20, "Should equal 20")
+      self.assertEqual(self.calc.calculate("5-2^2*5"), -15, "Should equal -15")
+
 if __name__ == '__main__':
     unittest.main()

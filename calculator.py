@@ -3,6 +3,7 @@ from collections import deque
 
 class Calculator:
     supported_operators = {
+        "^": {"precedence": 4, "assoc": "right"},
         "*": {"precedence": 3, "assoc": "left"},
         "/": {"precedence": 3, "assoc": "left"},
         "+": {"precedence": 2, "assoc": "left"},
@@ -69,6 +70,7 @@ class Calculator:
         elif token == "-": self.__subtract(operands)
         elif token == "*": self.__multiply(operands)
         elif token == "/": self.__divide(operands)
+        elif token == "^": self.__power(operands)
 
     def __append_operator(self, operators, output, op1):
         while len(operators) > 0:
@@ -124,3 +126,11 @@ class Calculator:
             op2 = operands.pop()
             op1 = operands.pop()
             operands.append(op1 / op2)
+
+    def __power(self, operands):
+        if len(operands) < 2:
+            raise RuntimeError("Raising to power requires 2 operands")
+        else:
+            op2 = operands.pop()
+            op1 = operands.pop()
+            operands.append(op1 ** op2)
