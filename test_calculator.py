@@ -67,6 +67,17 @@ class TestCalculator(unittest.TestCase):
   def test_calculate_with_parenthesis(self):
       self.assertEqual(self.calc.calculate("2*(3+5)"), 16, "Should equal 16")
 
+  def test_raise_exception_when_missing_right_parenthesis(self):
+      with self.assertRaises(RuntimeError) as ex:
+          self.calc.calculate("2*(3+5")
+
+      self.assertEqual(ex.exception.message, "Mismatching parenthesis")
+
+  def test_raise_exception_when_missing_left_parenthesis(self):
+      with self.assertRaises(RuntimeError) as ex:
+          self.calc.calculate("2*3+5)")
+
+      self.assertEqual(ex.exception.message, "Mismatching parenthesis")
 
 if __name__ == '__main__':
     unittest.main()

@@ -30,16 +30,23 @@ class Calculator:
             elif e == "(":
                 operators.append(e)
             elif e == ")":
+                paren_found = False
                 while len(operators) > 0:
                     if operators[-1] == "(":
+                        paren_found = True
                         operators.pop()
                         break
                     else:
                         output.append(operators.pop())
+
+                if paren_found == False:
+                    raise RuntimeError("Mismatching parenthesis")
             else:
                 self.__append_operator(operators, output, e)
 
         while len(operators) > 0:
+            if operators[-1] == "(":
+                raise RuntimeError("Mismatching parenthesis")
             output.append(operators.pop())
 
     def __eval_rpn(self, output):
