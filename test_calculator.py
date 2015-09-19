@@ -22,13 +22,13 @@ class TestCalculator(unittest.TestCase):
       with self.assertRaises(RuntimeError) as ex:
           self.calc.calculate("3+2-")
 
-      self.assertEqual(ex.exception.message, "Subtraction requires 2 operands")
+      self.assertEqual(ex.exception.message, "Operator requires 2 operands")
 
   def test_raise_exception_when_unmatching_addition_operand(self):
       with self.assertRaises(RuntimeError) as ex:
           self.calc.calculate("3-2+")
 
-      self.assertEqual(ex.exception.message, "Addition requires 2 operands")
+      self.assertEqual(ex.exception.message, "Operator requires 2 operands")
 
   def test_calculate_with_one_operand(self):
       self.assertEqual(self.calc.calculate("5"), 5, "Should equal 5")

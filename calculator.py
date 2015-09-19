@@ -97,46 +97,16 @@ class Calculator:
         return self.supported_operators[op]["precedence"]
 
     def __eval_operator(self, token, operands):
-        if token == "+": self.__add(operands)
-        elif token == "-": self.__subtract(operands)
-        elif token == "*": self.__multiply(operands)
-        elif token == "/": self.__divide(operands)
-        elif token == "^": self.__power(operands)
+        if token == "+": self.__eval(operands, lambda x, y: x + y)
+        elif token == "-": self.__eval(operands, lambda x, y: x - y)
+        elif token == "*": self.__eval(operands, lambda x, y: x * y)
+        elif token == "/": self.__eval(operands, lambda x, y: x / y)
+        elif token == "^": self.__eval(operands, lambda x, y: x ** y)
 
-    def __add(self, operands):
+    def __eval(self, operands, func):
         if len(operands) < 2:
-            raise RuntimeError("Addition requires 2 operands")
-        else:
-            result = operands.pop() + operands.pop()
-            operands.append(result)
-
-    def __subtract(self, operands):
-        if len(operands) < 2:
-            raise RuntimeError("Subtraction requires 2 operands")
+            raise RuntimeError("Operator requires 2 operands")
         else:
             op2 = operands.pop()
             op1 = operands.pop()
-            operands.append(op1 - op2)
-
-    def __multiply(self, operands):
-        if len(operands) < 2:
-            raise RuntimeError("Multiplication requires 2 operands")
-        else:
-            result = operands.pop() * operands.pop()
-            operands.append(result)
-
-    def __divide(self, operands):
-        if len(operands) < 2:
-            raise RuntimeError("Division requires 2 operands")
-        else:
-            op2 = operands.pop()
-            op1 = operands.pop()
-            operands.append(op1 / op2)
-
-    def __power(self, operands):
-        if len(operands) < 2:
-            raise RuntimeError("Raising to power requires 2 operands")
-        else:
-            op2 = operands.pop()
-            op1 = operands.pop()
-            operands.append(op1 ** op2)
+            operands.append(func(op1, op2))
