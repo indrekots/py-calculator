@@ -3,11 +3,11 @@ from collections import deque
 
 class Calculator:
     supported_operators = {
-        "^": {"precedence": 4, "assoc": "right"},
-        "*": {"precedence": 3, "assoc": "left"},
-        "/": {"precedence": 3, "assoc": "left"},
-        "+": {"precedence": 2, "assoc": "left"},
-        "-": {"precedence": 2, "assoc": "left"}
+        "^": {"precedence": 4, "assoc": "right", "func": lambda x, y: x ** y},
+        "*": {"precedence": 3, "assoc": "left", "func": lambda x, y: x * y},
+        "/": {"precedence": 3, "assoc": "left", "func": lambda x, y: x / y},
+        "+": {"precedence": 2, "assoc": "left", "func": lambda x, y: x + y},
+        "-": {"precedence": 2, "assoc": "left", "func": lambda x, y: x - y}
     }
 
     def calculate(self, input_string):
@@ -97,16 +97,10 @@ class Calculator:
         return self.supported_operators[op]["precedence"]
 
     def __eval_operator(self, token, operands):
-        if token == "+": self.__eval(operands, lambda x, y: x + y)
-        elif token == "-": self.__eval(operands, lambda x, y: x - y)
-        elif token == "*": self.__eval(operands, lambda x, y: x * y)
-        elif token == "/": self.__eval(operands, lambda x, y: x / y)
-        elif token == "^": self.__eval(operands, lambda x, y: x ** y)
-
-    def __eval(self, operands, func):
         if len(operands) < 2:
             raise RuntimeError("Operator requires 2 operands")
         else:
+            func = self.supported_operators[token]["func"]
             op2 = operands.pop()
             op1 = operands.pop()
             operands.append(func(op1, op2))
