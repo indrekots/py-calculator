@@ -13,11 +13,11 @@ class Calculator:
     def calculate(self, input_string):
         output = deque([])
         operators = []
-        elems = self.__find_exp_elems(input_string)
+        elems = self.__tokenize(input_string)
         self.__parse_infix_notation(elems, output, operators)
         return self.__eval_rpn(output)
 
-    def __find_exp_elems(self, input_string):
+    def __tokenize(self, input_string):
         elems = re.findall(self.__build_regexp(), input_string)
         if not elems:
             raise RuntimeError("No operands or operators provided")
