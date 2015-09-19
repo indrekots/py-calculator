@@ -18,11 +18,14 @@ class Calculator:
         return self.__eval_rpn(output)
 
     def __find_exp_elems(self, input_string):
-        regexp = "\d+|[{0}{1}]".format("".join(self.supported_operators.keys()), "\(\)")
-        elems = re.findall(regexp, input_string)
+        elems = re.findall(self.__build_regexp(), input_string)
         if not elems:
             raise RuntimeError("No operands or operators provided")
         else: return elems
+
+    def __build_regexp(self):
+        base = "\d+|[{0}{1}]"
+        return base.format("".join(self.supported_operators.keys()), "\(\)")
 
     def __parse_infix_notation(self, elements, output, operators):
         for e in elements:
@@ -31,17 +34,7 @@ class Calculator:
             elif e == "(":
                 operators.append(e)
             elif e == ")":
-                paren_found = False
-                while len(operators) > 0:
-                    if operators[-1] == "(":
-                        paren_found = True
-                        operators.pop()
-                        break
-                    else:
-                        output.append(operators.pop())
-
-                if paren_found == False:
-                    raise RuntimeError("Mismatching parenthesis")
+                self.__pop_operators_until_left_paren(operators, output)
             else:
                 self.__append_operator(operators, output, e)
 
@@ -49,6 +42,19 @@ class Calculator:
             if operators[-1] == "(":
                 raise RuntimeError("Mismatching parenthesis")
             output.append(operators.pop())
+
+    def __pop_operators_until_left_paren(self, operators, output):
+        paren_found = False
+        while len(operators) > 0:
+            if operators[-1] == "(":
+                paren_found = True
+                operators.pop()
+                break
+            else:
+                output.append(operators.pop())
+
+        if paren_found == False:
+            raise RuntimeError("Mismatching parenthesis")
 
     def __eval_rpn(self, output):
         operands = []
@@ -64,13 +70,6 @@ class Calculator:
 
     def __is_operand(self, token):
         return isinstance(token, float)
-
-    def __eval_operator(self, token, operands):
-        if token == "+": self.__add(operands)
-        elif token == "-": self.__subtract(operands)
-        elif token == "*": self.__multiply(operands)
-        elif token == "/": self.__divide(operands)
-        elif token == "^": self.__power(operands)
 
     def __append_operator(self, operators, output, op1):
         while len(operators) > 0:
@@ -96,6 +95,13 @@ class Calculator:
 
     def __op_precedence(self, op):
         return self.supported_operators[op]["precedence"]
+
+    def __eval_operator(self, token, operands):
+        if token == "+": self.__add(operands)
+        elif token == "-": self.__subtract(operands)
+        elif token == "*": self.__multiply(operands)
+        elif token == "/": self.__divide(operands)
+        elif token == "^": self.__power(operands)
 
     def __add(self, operands):
         if len(operands) < 2:
