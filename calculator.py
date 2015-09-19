@@ -2,7 +2,7 @@ import re
 from collections import deque
 
 class Calculator:
-    supported_operators = {
+    ops_avail = {
         "^": {"precedence": 4, "assoc": "right", "func": lambda x, y: x ** y},
         "*": {"precedence": 3, "assoc": "left", "func": lambda x, y: x * y},
         "/": {"precedence": 3, "assoc": "left", "func": lambda x, y: x / y},
@@ -25,7 +25,7 @@ class Calculator:
 
     def __build_regexp(self):
         base = "\d+|[{0}{1}]"
-        return base.format("".join(self.supported_operators.keys()), "\(\)")
+        return base.format("".join(self.ops_avail.keys()), "\(\)")
 
     def __parse_infix_notation(self, elements, output, operators):
         for e in elements:
@@ -88,19 +88,19 @@ class Calculator:
                 self.__op_precedence(op1) < self.__op_precedence(op2)))
 
     def __is_left_associative(self, op):
-        return self.supported_operators[op]["assoc"] == "left"
+        return self.ops_avail[op]["assoc"] == "left"
 
     def __is_right_associative(self, op):
-        return self.supported_operators[op]["assoc"] == "right"
+        return self.ops_avail[op]["assoc"] == "right"
 
     def __op_precedence(self, op):
-        return self.supported_operators[op]["precedence"]
+        return self.ops_avail[op]["precedence"]
 
     def __eval_operator(self, token, operands):
         if len(operands) < 2:
             raise RuntimeError("Operator requires 2 operands")
         else:
-            func = self.supported_operators[token]["func"]
+            func = self.ops_avail[token]["func"]
             op2 = operands.pop()
             op1 = operands.pop()
             operands.append(func(op1, op2))
