@@ -4,7 +4,7 @@ This is a calculator class which is able to take infix notation inputs and calcu
 
 ##Supported operators
 
-* Exponentiation
+* exponentiation
 * multiplication
 * division
 * addition
